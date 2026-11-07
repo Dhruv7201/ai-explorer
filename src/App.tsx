@@ -28,8 +28,8 @@ export default function App() {
           <a href="#/" className="brand" aria-label="AI Explorer home">
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden>
               <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="brand-frame" />
-              <path d="M7.5 25.5 15 7.5h2l7.5 18M10.8 19h10.4" className="brand-letter" />
-              <circle cx="25" cy="7.5" r="3" className="brand-node" />
+              <path d="M7 25 16 8 25 25M11 18.5h10" className="brand-letter" />
+              <circle cx="16" cy="8" r="3.8" className="brand-node" />
             </svg>
             <span className="brand-text">AI Explorer</span>
           </a>
