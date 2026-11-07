@@ -27,9 +27,9 @@ export default function App() {
         <div className="side-top">
           <a href="#/" className="brand" aria-label="AI Explorer home">
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden>
-              <rect x="1.5" y="1.5" width="29" height="29" rx="5" className="brand-frame" />
-              <path d="M8 22 C12 22 12 10 16 10 S20 22 24 22" className="brand-wire" />
-              <circle cx="16" cy="10" r="3" className="brand-node" />
+              <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="brand-frame" />
+              <path d="M7.5 25.5 15 7.5h2l7.5 18M10.8 19h10.4" className="brand-letter" />
+              <circle cx="25" cy="7.5" r="3" className="brand-node" />
             </svg>
             <span className="brand-text">AI Explorer</span>
           </a>
