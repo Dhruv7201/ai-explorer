@@ -523,4 +523,94 @@ export const LINKS: Record<string, MachineLinks> = {
       action: web('https://simonwillison.net/tags/prompt-injection/', 'Simon Willison: all posts on prompt injection'),
     },
   },
+  tokenization: {
+    main: [
+      arxiv('1508.07909', 'Sennrich et al. (2016): Neural Machine Translation of Rare Words with Subword Units'),
+      web('https://huggingface.co/learn/llm-course/chapter6/5', 'Hugging Face course: Byte-Pair Encoding tokenization'),
+      wiki('Byte_pair_encoding', 'Byte-pair encoding'),
+    ],
+    parts: {
+      text: wiki('Large_language_model', 'Large language model'),
+      split: wiki('Character_(computing)', 'Characters in computing'),
+      corpus: wiki('Text_corpus'),
+      merges: wiki('Byte_pair_encoding', 'How BPE learns merges'),
+      apply: web('https://github.com/openai/tiktoken', 'tiktoken: OpenAI’s BPE tokenizer'),
+      ids: wiki('Word_embedding', 'From token IDs to embeddings'),
+    },
+  },
+  'vector-search': {
+    main: [
+      arxiv('1908.10084', 'Reimers & Gurevych (2019): Sentence-BERT'),
+      wiki('Vector_database'),
+      wiki('Semantic_search'),
+    ],
+    parts: {
+      query: wiki('Semantic_search'),
+      embed: wiki('Sentence_embedding'),
+      docs: wiki('Word_embedding'),
+      index: arxiv('1603.09320', 'Malkov & Yashunin: HNSW approximate nearest-neighbour search'),
+      score: wiki('Cosine_similarity'),
+      results: wiki('Retrieval-augmented_generation', 'Retrieval-augmented generation'),
+    },
+  },
+  'gradient-boosting': {
+    main: [
+      wiki('Gradient_boosting'),
+      doi('10.1214/aos/1013203451', 'Friedman (2001): Greedy function approximation: a gradient boosting machine'),
+      arxiv('1603.02754', 'Chen & Guestrin (2016): XGBoost'),
+    ],
+    parts: {
+      data: wiki('Regression_analysis'),
+      base: wiki('Arithmetic_mean'),
+      residuals: wiki('Errors_and_residuals'),
+      tree: wiki('Decision_stump'),
+      add: wiki('Learning_rate'),
+      model: wiki('Ensemble_learning'),
+    },
+  },
+  overfitting: {
+    main: [
+      wiki('Overfitting'),
+      web('https://developers.google.com/machine-learning/crash-course/overfitting', 'Google ML Crash Course: Overfitting'),
+      doi('10.1080/00401706.1970.10488634', 'Hoerl & Kennard (1970): Ridge regression'),
+    ],
+    parts: {
+      train: wiki('Training,_validation,_and_test_data_sets', 'Training, validation and test sets'),
+      model: wiki('Polynomial_regression'),
+      penalty: wiki('Ridge_regression'),
+      fit: wiki('Least_squares'),
+      validation: wiki('Cross-validation_(statistics)', 'Cross-validation'),
+      verdict: wiki('Bias–variance_tradeoff', 'Bias–variance trade-off'),
+    },
+  },
+  quantization: {
+    main: [
+      arxiv('2208.07339', 'Dettmers et al. (2022): LLM.int8()'),
+      arxiv('2210.17323', 'Frantar et al. (2022): GPTQ'),
+      web('https://huggingface.co/docs/transformers/main/en/quantization/overview', 'Hugging Face: Quantization overview'),
+    ],
+    parts: {
+      weights: wiki('Half-precision_floating-point_format', 'Half-precision (16-bit) numbers'),
+      range: wiki('Quantization_(signal_processing)', 'Quantization'),
+      round: wiki('Rounding'),
+      store: arxiv('2305.14314', 'Dettmers et al. (2023): QLoRA and 4-bit NormalFloat'),
+      dequant: arxiv('2306.00978', 'Lin et al. (2023): AWQ'),
+      result: wiki('Graphics_processing_unit', 'GPU memory'),
+    },
+  },
+  'kv-cache': {
+    main: [
+      arxiv('1911.02150', 'Shazeer (2019): Fast Transformer Decoding (multi-query attention)'),
+      arxiv('2305.13245', 'Ainslie et al. (2023): Grouped-query attention'),
+      arxiv('2309.06180', 'Kwon et al. (2023): PagedAttention and vLLM'),
+    ],
+    parts: {
+      prompt: wiki('Large_language_model', 'Large language model'),
+      prefill: web('https://jalammar.github.io/illustrated-gpt2/', 'The Illustrated GPT-2 (Jay Alammar)'),
+      attend: wiki('Attention_(machine_learning)', 'Attention'),
+      cache: arxiv('2309.06180', 'PagedAttention: managing the KV cache'),
+      decode: wiki('Autoregressive_model'),
+      output: wiki('Transformer_(deep_learning_architecture)', 'Transformer architecture'),
+    },
+  },
 }

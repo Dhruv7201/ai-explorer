@@ -36,6 +36,12 @@ import { mcpMachine } from './mcp'
 import { injectionMachine } from './injection'
 import { jepaMachine } from './jepa'
 import { nnBasicsMachine } from './nnbasics'
+import { tokenizationMachine } from './tokenization'
+import { semanticMachine } from './semantic'
+import { boostingMachine } from './boosting'
+import { overfittingMachine } from './overfitting'
+import { quantizationMachine } from './quantization'
+import { kvCacheMachine } from './kvcache'
 
 export const ERAS: { id: Era; name: string; upcoming: { year: number; name: string }[] }[] = [
   { id: 'classic', name: 'Classic AI', upcoming: [] },
@@ -83,6 +89,12 @@ export const MACHINES: Machine[] = [
   injectionMachine,
   jepaMachine,
   nnBasicsMachine,
+  tokenizationMachine,
+  semanticMachine,
+  boostingMachine,
+  overfittingMachine,
+  quantizationMachine,
+  kvCacheMachine,
 ].sort((a, b) => ERAS.findIndex((e) => e.id === a.era) - ERAS.findIndex((e) => e.id === b.era) || a.year - b.year)
 
 export const findMachine = (id: string) => MACHINES.find((m) => m.id === id)
