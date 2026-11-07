@@ -160,8 +160,19 @@ export function Diagram(props: Props) {
     el.style.transform = `translate3d(${p.x * s}px, ${p.y * s}px, 0) translate(-50%, -50%)`
   }
 
+  /** On narrow screens the drawing scrolls sideways; keep the parcel's destination in view. */
+  const follow = (p: Pt) => {
+    const wrap = wrapRef.current
+    const box = wrap?.parentElement
+    if (!wrap || !box || box.scrollWidth <= box.clientWidth + 1) return
+    const x = (p.x * wrap.clientWidth) / VIEW_W
+    if (x > box.scrollLeft + 40 && x < box.scrollLeft + box.clientWidth - 40) return
+    box.scrollTo({ left: x - box.clientWidth / 2, behavior: reducedMotion() ? 'auto' : 'smooth' })
+  }
+
   useLayoutEffect(() => {
     const end = dockOf(to)
+    follow(end)
     const path = liveRef.current
     if (!moving || !path || reducedMotion()) {
       place(end)

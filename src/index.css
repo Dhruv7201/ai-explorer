@@ -65,6 +65,9 @@
 /* ─── base ─── */
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html.no-scroll { overflow: hidden; }
+button, a, input, label { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 body {
   background: var(--paper);
   color: var(--ink);
@@ -379,6 +382,25 @@ main { flex: 1; padding: 22px 24px 0; }
 .inputs { margin-top: 18px; padding: 16px 18px 18px; border: 1px dashed var(--line); border-radius: 4px; }
 .inputs h3 { font-size: 1rem; margin-bottom: 12px; }
 .inputs-grid { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: flex-end; }
+
+/* ─── walkthrough: every step as plain text ─── */
+.walkthrough { margin-top: 18px; border: 1px dashed var(--line); border-radius: 4px; }
+.walkthrough summary { cursor: pointer; padding: 14px 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; list-style: none; }
+.walkthrough summary::-webkit-details-marker { display: none; }
+.walkthrough summary::before { content: ''; width: 7px; height: 7px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(-45deg); transition: transform 0.2s; flex: none; }
+.walkthrough[open] summary::before { transform: rotate(45deg); }
+.walkthrough summary span { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--ink-3); margin-left: auto; }
+.walkthrough h3 { font-size: 1rem; margin: 6px 18px 10px; }
+.walk-steps { margin: 0 18px 18px; padding-left: 1.4em; display: grid; gap: 12px; }
+.walk-steps li::marker { font-family: var(--mono); color: var(--ink-3); }
+.walk-steps button { all: unset; cursor: pointer; font-weight: 600; }
+.walk-steps button:hover, .walk-steps li.is-now button { color: var(--amber); }
+.walk-steps button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.walk-steps p { margin: 2px 0 0; color: var(--ink-2); max-width: 74ch; }
+.walk-parts { margin: 0 18px 18px; display: grid; gap: 8px; }
+.walk-parts div { display: grid; grid-template-columns: minmax(9rem, max-content) 1fr; gap: 2px 14px; }
+.walk-parts dt { font-weight: 600; }
+.walk-parts dd { margin: 0; color: var(--ink-2); }
 .control { display: flex; flex-direction: column; gap: 6px; min-width: 190px; }
 .control.wide { flex: 1 1 100%; }
 .control-label { font-size: 0.9rem; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
@@ -502,7 +524,7 @@ input[type='text']:focus { outline: 2px solid var(--amber); outline-offset: 1px;
 
 /* ─── responsive ─── */
 @media (max-width: 1180px) {
-  .explorer { grid-template-columns: 1fr; }
+  .explorer { grid-template-columns: minmax(0, 1fr); }
   .side-col { position: static; max-height: none; overflow: visible; }
   .inspector { height: auto; max-height: none; }
 }
@@ -521,7 +543,49 @@ input[type='text']:focus { outline: 2px solid var(--amber); outline-offset: 1px;
   .narration { grid-template-columns: 1fr; }
   .pips { grid-column: 1; }
   .control { min-width: 100%; }
+
+  /* safe areas on notched phones */
+  .mobile-bar { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  main { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .footer { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .sidebar { height: 100dvh; overscroll-behavior: contain; padding-bottom: env(safe-area-inset-bottom); }
+  .era-body li a, .era-body li .is-soon { min-height: 40px; }
+
+  /* title block: smaller year stamp so the name gets the width */
+  .machine-head { column-gap: 12px; }
+  .drawing-no { font-size: 0.75rem; padding: 6px 8px; }
+
+  /* The drawing is 900 wide: keep it legible and let it scroll sideways instead of shrinking to a smudge. */
+  .diagram { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: none; -webkit-overflow-scrolling: touch; }
+  .diagram-inner { width: 760px; }
+  .diagram::before, .diagram::after { display: none; }
+  .workbench .diagram-hint { display: flex; }
+
+  /* narration: controls on one row, comfortable tap targets */
+  .narration { gap: 10px; padding-top: 14px; }
+  .transport { gap: 10px; }
+  .transport button { width: 46px; height: 46px; }
+  .story { min-height: 0; }
+  .story h2 { font-size: 1.3rem; }
+  .pips { gap: 4px; margin-top: 4px; }
+  .pips li { display: flex; }
+  .pips button { height: 24px; width: 26px; background: none; }
+  .pips button::before { content: ''; position: absolute; left: 0; right: 0; top: 9px; height: 6px; border-radius: 3px; background: var(--line); }
+  .pips button.is-past::before { background: var(--ink-2); }
+  .pips button.is-now { width: 40px; }
+  .pips button.is-past, .pips button.is-now, .pips button.is-now:not(:has(.pip-fill)) { background: none; }
+  .pips button.is-now:not(:has(.pip-fill))::before { background: var(--amber); }
+  .pip-fill { inset: 9px 0 auto; height: 6px; border-radius: 3px; z-index: 1; }
+
+  /* 16px+ text in fields stops iOS from zooming in on focus */
+  input[type='text'] { font-size: 16px; }
+  input[type='range'] { height: 32px; }
+
+  .inputs, .learn, .inspector { padding-left: 14px; padding-right: 14px; }
+  .walk-parts div { grid-template-columns: 1fr; }
 }
+.workbench, .side-col { min-width: 0; }
+.diagram-hint { display: none; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.78rem; color: var(--ink-3); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .wire-live { stroke-dashoffset: 0; }

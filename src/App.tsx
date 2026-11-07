@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { ERAS, MACHINES, findMachine } from './machines'
-import { useHashRoute, useTheme } from './hooks'
+import { usePathRoute, useTheme } from './hooks'
+import { applyMeta, pageMeta } from './seo'
 import { Explorer } from './components/Explorer'
 import type { Era } from './types'
 
-export default function App() {
-  const route = useHashRoute()
+export default function App({ initialPath }: { initialPath?: string } = {}) {
+  const route = usePathRoute(initialPath)
   const [theme, toggleTheme] = useTheme()
-  const machine = findMachine(route[0] ?? '') ?? MACHINES[0]
+  const found = findMachine(route[0] ?? '')
+  const machine = found ?? MACHINES[0]
   // Only one era is expanded at a time, so the sidebar stays short.
   const [open, setOpen] = useState<Era | null>(machine.era)
   const [collapsed, setCollapsed] = useState(false)
@@ -19,13 +21,30 @@ export default function App() {
     setDrawer(false)
   }, [machine.era, machine.id])
 
+  // Keep the tab title, description and canonical URL in step with the page.
+  useEffect(() => {
+    applyMeta(pageMeta(found ?? null))
+  }, [found])
+
+  // Phone drawer: close on Escape, and stop the page behind it from scrolling.
+  useEffect(() => {
+    if (!drawer) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setDrawer(false)
+    document.addEventListener('keydown', onKey)
+    document.documentElement.classList.add('no-scroll')
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.documentElement.classList.remove('no-scroll')
+    }
+  }, [drawer])
+
   const toggleEra = (id: Era) => setOpen((cur) => (cur === id ? null : id))
 
   return (
     <div className={`app ${collapsed ? 'side-collapsed' : ''} ${drawer ? 'drawer-open' : ''}`}>
       <aside className="sidebar" aria-label="Topics">
         <div className="side-top">
-          <a href="#/" className="brand" aria-label="AI Explorer home">
+          <a href="/" className="brand" aria-label="AI Explorer home">
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden>
               <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="brand-frame" />
               <path d="M7 25 16 8 25 25M11 18.5h10" className="brand-letter" />
@@ -65,7 +84,7 @@ export default function App() {
                   <ul>
                     {list.map((m) => (
                       <li key={m.id}>
-                        <a href={`#/${m.id}`} className={m.id === machine.id ? 'is-current' : ''} aria-current={m.id === machine.id ? 'page' : undefined}>
+                        <a href={`/${m.id}`} className={m.id === machine.id ? 'is-current' : ''} aria-current={m.id === machine.id ? 'page' : undefined}>
                           <span>{m.name}</span>
                           <small>{m.year}</small>
                         </a>

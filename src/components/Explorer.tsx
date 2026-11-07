@@ -88,6 +88,13 @@ export function Explorer({ machine }: { machine: Machine }) {
           />
         </div>
 
+        <p className="diagram-hint">
+          <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 7 3 10l3 3M14 7l3 3-3 3M3 10h14" />
+          </svg>
+          Swipe the drawing sideways. Tap any box to see what it holds.
+        </p>
+
         <div className="narration">
           <div className="transport">
             <button onClick={() => go(idx - 1)} disabled={idx === 0} aria-label="Previous step">
@@ -137,6 +144,33 @@ export function Explorer({ machine }: { machine: Machine }) {
             ))}
           </div>
         </section>
+
+        {/* The whole walkthrough as plain text: readable without the animation, and indexable by search engines. */}
+        <details className="walkthrough">
+          <summary>
+            Read the whole walkthrough as text <span>{steps.length} steps</span>
+          </summary>
+          <h3>How {machine.name} works, step by step</h3>
+          <ol className="walk-steps">
+            {steps.map((s, i) => (
+              <li key={i} className={i === idx ? 'is-now' : ''}>
+                <button type="button" onClick={() => go(i)}>
+                  {s.title}
+                </button>
+                <p>{s.caption}</p>
+              </li>
+            ))}
+          </ol>
+          <h3>The parts of the machine</h3>
+          <dl className="walk-parts">
+            {machine.stations.map((st) => (
+              <div key={st.id}>
+                <dt>{st.name}</dt>
+                <dd>{st.role}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
       </section>
 
       <div className="side-col">

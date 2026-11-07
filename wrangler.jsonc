@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers config: serves the prerendered Vite build as a static site.
+  "name": "ai-explorer",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // dist/perceptron.html is served at /perceptron.
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get dist/404.html with a real 404 status.
+    "not_found_handling": "404-page"
+  }
+}
